@@ -16,7 +16,7 @@ export const StopWatch = () => {
   } 
 
   const handleReset = () => {
-    handlePause();
+    clearInterval(intervalID.current as NodeJS.Timeout);
     setTime(0);
   }
   
