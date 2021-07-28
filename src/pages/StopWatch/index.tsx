@@ -8,24 +8,19 @@ export const StopWatch = () => {
   const [time, setTime] = useState(0);
   const intervalID = useRef<NodeJS.Timeout>();
   
-  const handleStart = () => {
+  const start = () => {
     intervalID.current = setInterval(() => setTime(t => t + 10), 10);
   } 
 
-  const handlePause = () => {
+  const pause = () => {
     intervalID?.current && clearInterval(intervalID.current);
   } 
 
-  const handleReset = () => {
-    intervalID?.current && clearInterval(intervalID.current);
+  const reset = () => {
     setTime(0);
   }
   
-  const [machine, send] = useMachine(stopWatchMachine({
-    handleReset, 
-    handleStart, 
-    handlePause, 
-  }));
+  const [machine, send] = useMachine(stopWatchMachine({ start, pause, reset, }));
 
   return (
     <div>

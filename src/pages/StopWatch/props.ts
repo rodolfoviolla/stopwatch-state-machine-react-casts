@@ -1,32 +1,35 @@
 import { StopWatchStateMachineEntries } from "./interfaces";
 
-export const stopWatchMachine = (
-  { handleReset, handleStart, handlePause }: StopWatchStateMachineEntries
-) => 
-  ({
-    initial: 'idle',
-    states: {
-      idle: {
-        on: {
-          START: 'running',
-        },
-        effect: handleReset,
+export const stopWatchMachine = ({ start, pause, reset }: StopWatchStateMachineEntries) => ({
+  initial: 'idle',
+  states: {
+    idle: {
+      on: {
+        START: 'running',
       },
-      running: {
-        on : {
-          PAUSE: 'paused',
-        },
-        effect: handleStart,
-      },
-      paused: {
-        on: {
-          RESET: 'idle',
-          START: 'running'
-        },
-        effect: handlePause,
-      }
+      effect: () => {
+        pause();
+        reset();
+      } 
     },
-  });
+    running: {
+      on : {
+        PAUSE: 'paused',
+      },
+      effect: () => {
+        start();
+
+        return pause;
+      },
+    },
+    paused: {
+      on: {
+        RESET: 'idle',
+        START: 'running'
+      },
+    },
+  },
+});
 
 export const formatTime = (time: number) => {
   const dateTimer = new Date(time);

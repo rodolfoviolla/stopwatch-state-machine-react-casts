@@ -8,7 +8,7 @@ type PossibleEventsEvent = keyofObject<StopWatchMachineStatesReturn[keyof StopWa
 export type PossibleEvents = { event: PossibleEventsEvent; title: string };
 
 export type StopWatchStateMachineEntries = {
-  handleReset: () => void;
-  handleStart: () => void;
-  handlePause: () => void;
+  start: () => void;
+  pause: () => void;
+  reset: () => void;
 }

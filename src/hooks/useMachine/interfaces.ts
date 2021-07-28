@@ -4,7 +4,7 @@ type MachineStateEvent = {
 
 type MachineStateConfig = {
   on: MachineStateEvent;
-  effect: () => void | (() => void);
+  effect?: () => void | (() => void);
 }
 
 export type MachineConfig = {
