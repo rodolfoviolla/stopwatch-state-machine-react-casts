@@ -1,38 +1,36 @@
-import { createMachine } from 'xstate';
+import { StopWatchStateMachineEntries } from "./interfaces";
 
-type StopWatchStateMachineEntries = {
-  handleReset: () => void;
-  handleStart: () => void;
-  handlePause: () => void;
-}
-
-export const stopWatchMachine = ({ handleReset, handleStart, handlePause }: StopWatchStateMachineEntries) => 
-  createMachine({
+export const stopWatchMachine = (
+  { handleReset, handleStart, handlePause }: StopWatchStateMachineEntries
+) => 
+  ({
     initial: 'idle',
     states: {
       idle: {
         on: {
           START: 'running',
         },
-        entry: () => handleReset(),
+        effect: handleReset,
       },
       running: {
         on : {
           PAUSE: 'paused',
         },
-        entry: () => handleStart(),
+        effect: handleStart,
       },
       paused: {
         on: {
           RESET: 'idle',
           START: 'running'
         },
-        entry: () => handlePause(),
-      },
+        effect: handlePause,
+      }
     },
   });
 
-export const formatTime = (dateTimer: Date) => {
+export const formatTime = (time: number) => {
+  const dateTimer = new Date(time);
+
   const minutes = `0${dateTimer.getUTCMinutes()}`;
   const seconds = `0${dateTimer.getUTCSeconds()}`;
   const milliseconds = `0${dateTimer.getUTCMilliseconds()}`;
